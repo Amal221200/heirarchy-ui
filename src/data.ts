@@ -1,44 +1,5 @@
-import { Employee } from "./components/HeirarchyUI";
+import { Employee } from "@/types";
 
-// const team: Employee = {
-//     name: "Henry Wilson",
-//     id: "DES001",
-//     phoneNumber: "+1 (012) 345-6789",
-//     emailId: "henry.wilson@company.com",
-//     role: "Head of Design",
-//     department: "Design",
-//     children: [
-
-//         {
-//             name: "Design Team",
-//             department: "Design",
-//             id: "DT1",
-//             role: "Team",
-//             emailId: "",
-//             phoneNumber: "",
-//             children: [
-//                 {
-//                     name: "Ivy Chen",
-//                     id: "DT1L001",
-//                     phoneNumber: "+1 (123) 456-7890",
-//                     emailId: "ivy.chen@company.com",
-//                     role: "Team Leader",
-//                     department: "Design",
-//                     teamId: "DT1",
-//                 },
-//                 {
-//                     name: "Jack Taylor",
-//                     id: "DT1M001",
-//                     phoneNumber: "+1 (234) 567-8901",
-//                     emailId: "jack.taylor@company.com",
-//                     role: "Team Member",
-//                     department: "Design",
-//                     teamId: "DT1",
-//                 },
-//             ]
-//         }
-//     ],
-// }
 
 export const companyData: Employee = {
     name: "John Doe",
