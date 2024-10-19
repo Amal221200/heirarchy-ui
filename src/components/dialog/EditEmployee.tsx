@@ -10,9 +10,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Employee, Team } from "@/types"
-import { Edit } from "lucide-react"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
+import EditButton from "../buttons/EditButton"
 
 interface EditEmployeeDialogProps {
   employee: Employee
@@ -38,10 +38,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Edit className="h-4 w-4" />
-          <span className="sr-only">Edit employee</span>
-        </Button>
+        <EditButton screanReaderText="Edit employee" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

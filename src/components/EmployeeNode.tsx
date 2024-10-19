@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react"
-import { ChevronDown, ChevronRight, User, Trash2 } from "lucide-react"
+import { ChevronDown, ChevronRight, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -12,6 +12,7 @@ import { useCompanyStore } from "@/hooks/useCompanyStore"
 import { EditEmployeeDialog } from "./dialog/EditEmployee"
 import { AddTeamMemberDialog } from "./dialog/AddTeamMember"
 import { AddTeamDialog } from "./dialog/AddTeam"
+import DeleteButton from "./buttons/DeleteButton"
 
 interface EmployeeNodeProps {
     employee: Employee
@@ -21,6 +22,7 @@ interface EmployeeNodeProps {
 export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) => {
     const { deleteEmployee, teams } = useCompanyStore()
     const [isOpen, setIsOpen] = useState(false)
+
     const handleDelete = () => {
         deleteEmployee(employee.id)
     }
@@ -37,6 +39,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) =
                             <User className="h-5 w-5 text-gray-500" />
                             <h3 className="text-lg font-semibold">{employee.name}</h3>
                             <span className="text-sm text-gray-500">({employee.role})</span>
+                            <span className="text-[12px] font-semibold text-gray-500">{employee.id}</span>
                         </div>
                         <div className="flex items-center space-x-2">
                             {employee.role !== "CEO" && (
@@ -45,10 +48,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) =
                                         employee={employee}
                                         teams={teams}
                                     />
-                                    <Button variant="outline" size="icon" onClick={handleDelete}>
-                                        <Trash2 className="h-4 w-4" />
-                                        <span className="sr-only">Delete employee</span>
-                                    </Button>
+                                    <DeleteButton onClick={handleDelete} screanReaderText="Delete employee" />
                                 </>
                             )}
                             {canAddMember && (

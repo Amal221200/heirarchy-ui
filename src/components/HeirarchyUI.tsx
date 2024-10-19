@@ -1,33 +1,20 @@
-import React, { useMemo, useState } from "react"
+import React, { useDeferredValue, useMemo, useState } from "react"
 import { EmployeeNode } from "./EmployeeNode"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SearchBar from "./SearchBar"
-import { Employee } from "@/types"
+import { searchEmployee } from "@/functions"
 
 const CompanyHierarchy: React.FC = () => {
   const [search, setSearch] = useState("")
   const { companyStructure } = useCompanyStore()
 
+  const defferedSearch = useDeferredValue(search)
+
   const filteredStructure = useMemo(() => {
-    if (!search) return [companyStructure]
-    function searchEmployee(employees: Employee): Employee[] {
-      const condition = employees.name.toLowerCase().includes(search.toLowerCase()) || employees.emailId.toLowerCase().includes(search.toLowerCase()) || employees.phoneNumber.toLowerCase().includes(search.toLowerCase())
-      if (condition) {
-        const children = employees.children ? employees.children.flatMap(child => searchEmployee(child)) : []
-        return [employees, ...children];
-      }
+    if (!defferedSearch) return [companyStructure]
 
-      if (employees.children) {
-        return employees.children.flatMap(child => searchEmployee(child))
-      }
-
-      return [];
-    }
-    return searchEmployee(companyStructure)
-  }, [search, companyStructure])
-
-
-
+    return searchEmployee(companyStructure, defferedSearch)
+  }, [defferedSearch, companyStructure])
 
   return (
     <div className="container mx-auto p-4">
