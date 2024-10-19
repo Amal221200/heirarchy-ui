@@ -10,7 +10,8 @@ import {
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import { EditEmployeeDialog } from "./dialog/EditEmployee"
-import { AddEmployeeDialog } from "./dialog/AddEmployee"
+import { AddTeamMemberDialog } from "./dialog/AddTeamMember"
+import { AddTeamDialog } from "./dialog/AddTeam"
 
 interface EmployeeNodeProps {
     employee: Employee
@@ -18,14 +19,15 @@ interface EmployeeNodeProps {
 }
 
 export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) => {
-    const { editTeamMember, addTeamMember, deleteEmployee, teams } = useCompanyStore()
+    const { deleteEmployee, teams } = useCompanyStore()
     const [isOpen, setIsOpen] = useState(false)
     const handleDelete = () => {
         deleteEmployee(employee.id)
     }
 
     const canAddMember = useMemo(()=> employee.role === "Team Leader", [employee.role])
-    
+    const isHeadOfDepartment = useMemo(()=> employee.role.includes('Head'), [employee.role])
+
     return (
         <Card className="mb-2">
             <CardContent className="p-4">
@@ -41,7 +43,6 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) =
                                 <>
                                     <EditEmployeeDialog
                                         employee={employee}
-                                        onUpdate={editTeamMember}
                                         teams={teams}
                                     />
                                     <Button variant="outline" size="icon" onClick={handleDelete}>
@@ -51,9 +52,13 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) =
                                 </>
                             )}
                             {canAddMember && (
-                                <AddEmployeeDialog
-                                    parentEmployee={employee}
-                                    onAdd={(newEmployee) => addTeamMember(employee.teamId!, newEmployee)}
+                                <AddTeamMemberDialog
+                                    teamLeader={employee}
+                                />
+                            )}
+                            {isHeadOfDepartment && (
+                                <AddTeamDialog
+                                    headOfDepartment={employee}
                                 />
                             )}
                             {employee.children && employee.children.length > 0 && (

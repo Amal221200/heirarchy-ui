@@ -11,26 +11,27 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { Plus } from "lucide-react"
+import { useCompanyStore } from "@/hooks/useCompanyStore"
 
-interface AddEmployeeDialogProps {
-  parentEmployee: Employee
-  onAdd: (newEmployee: Employee) => void
+interface AddTeamMemberDialogProps {
+  teamLeader: Employee
 }
 
-export const AddEmployeeDialog: React.FC<AddEmployeeDialogProps> = ({ parentEmployee, onAdd }) => {
+export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ teamLeader }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const {addTeamMember} = useCompanyStore()
   const [newEmployee, setNewEmployee] = useState<Employee>({
     name: "",
     id: "",
     phoneNumber: "",
     emailId: "",
     role: "Team Member",
-    department: parentEmployee.department,
-    teamId: parentEmployee.teamId,
+    department: teamLeader.department,
+    teamId: teamLeader.teamId,
   })
 
   const handleAdd = () => {
-    onAdd(newEmployee)
+    addTeamMember(teamLeader.teamId!, newEmployee)
     setIsOpen(false)
     setNewEmployee({
       name: "",
@@ -38,17 +39,17 @@ export const AddEmployeeDialog: React.FC<AddEmployeeDialogProps> = ({ parentEmpl
       phoneNumber: "",
       emailId: "",
       role: "Team Member",
-      department: parentEmployee.department,
-      teamId: parentEmployee.teamId,
+      department: teamLeader.department,
+      teamId: teamLeader.teamId,
     })
-  }
+  }  
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
           <Plus className="h-4 w-4" />
-          <span className="sr-only">Add employee</span>
+          <span className="sr-only">Add Team Member</span>
         </Button>
       </DialogTrigger>
       <DialogContent>

@@ -9,6 +9,7 @@ interface CompanyStore {
   addTeamMember: (teamId: string, newEmployee: Employee) => void
   deleteEmployee: (employeeId: string) => void
   editTeamMember: (updatedEmployee: Employee) => void
+  addTeam: (headOfDepartmentID: string, newTeam: Employee) => void
 }
 
 export const useCompanyStore = create<CompanyStore>((set) => ({
@@ -26,6 +27,10 @@ export const useCompanyStore = create<CompanyStore>((set) => ({
   addTeamMember: (teamId, newEmployee) =>
     set((state) => ({
       companyStructure: addTeamMemberRecursive(state.companyStructure, teamId, newEmployee),
+    })),
+  addTeam: (headOfDepartmentID, newTeam) =>
+    set((state) => ({
+      companyStructure: addTeamRecursive(state.companyStructure, headOfDepartmentID, newTeam),
     })),
   deleteEmployee: (employeeId) =>
     set((state) => ({
@@ -51,34 +56,33 @@ function updateEmployeeRecursive(employee: Employee, updatedEmployee: Employee):
   return employee
 }
 
-function addEmployeeRecursive(employee: Employee, parentId: string, newEmployee: Employee): Employee {
+function addTeamRecursive(employee: Employee, headOfDepartmentID: string, newTeam: Employee): Employee {
 
-  if (employee.id === parentId) {
+  if (employee.id === headOfDepartmentID) {
     return {
       ...employee,
-      children: [...(employee.children || []), newEmployee],
+      children: [...(employee.children || []), newTeam],
     }
   }
   if (employee.children) {
     return {
       ...employee,
-      children: employee.children.map((child) => addEmployeeRecursive(child, parentId, newEmployee)),
+      children: employee.children.map((child) => addTeamRecursive(child, headOfDepartmentID, newTeam)),
     }
   }
   return employee
 }
-function addTeamMemberRecursive(employee: Employee, teamId: string, newEmployee: Employee): Employee {
-
+function addTeamMemberRecursive(employee: Employee, teamId: string, newMember: Employee): Employee {
   if (employee.id === teamId) {
     return {
       ...employee,
-      children: [...(employee.children || []), newEmployee],
+      children: [...(employee.children || []), newMember],
     }
   }
   if (employee.children) {
     return {
       ...employee,
-      children: employee.children.map((child) => addTeamMemberRecursive(child, teamId, newEmployee)),
+      children: employee.children.map((child) => addTeamMemberRecursive(child, teamId, newMember)),
     }
   }
   return employee

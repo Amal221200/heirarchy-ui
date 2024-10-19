@@ -9,27 +9,26 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Employee, Team } from "@/types"
 import { Edit } from "lucide-react"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
+import SelectInput from "../SelectInput"
 
 interface EditEmployeeDialogProps {
   employee: Employee
-  onUpdate: (updatedEmployee: Employee) => void
   teams: Team[]
 }
 
 export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee, teams }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [editedEmployee, setEditedEmployee] = useState<Employee>(employee)
-  const {editTeamMember, updateEmployee} = useCompanyStore()
+  const { editTeamMember, updateEmployee } = useCompanyStore()
 
   const handleUpdate = () => {
-    if(editedEmployee.teamId === employee.teamId) {
-        updateEmployee(editedEmployee)
+    if (editedEmployee.teamId === employee.teamId) {
+      updateEmployee(editedEmployee)
     } else {
-        editTeamMember(editedEmployee)
+      editTeamMember(editedEmployee)
     }
     setIsOpen(false)
   }
@@ -93,23 +92,11 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
               <Label htmlFor="team" className="text-right">
                 Team
               </Label>
-              <Select
-                value={editedEmployee.teamId}
-                onValueChange={(value) =>
-                  setEditedEmployee({ ...editedEmployee, teamId: value })
-                }
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select a team" />
-                </SelectTrigger>
-                <SelectContent>
-                  {departmentTeams.map((team) => (
-                    <SelectItem key={team.id} value={team.id}>
-                      {team.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+
+              <SelectInput value={editedEmployee.teamId ?? ''}
+                onChange={(value) => setEditedEmployee({ ...editedEmployee, teamId: value })}
+                items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))} 
+                className="col-span-3" placeholder="Select Team"/>
             </div>
           )}
         </div>
