@@ -33,6 +33,7 @@ const CompanyHierarchy: React.FC = () => {
     <div className="container mx-auto p-4">
       <h1 className="mb-6 text-3xl font-bold">Company Hierarchy</h1>
       <SearchBar value={search} onChange={setSearch} />
+
       {
         filteredStructure.length > 0 ?
           filteredStructure.map(employee => <EmployeeNode
@@ -40,7 +41,7 @@ const CompanyHierarchy: React.FC = () => {
             level={0}
             key={employee.id}
           />
-        )
+          )
           : <h2 className="font-bold text-xl">No data found</h2>
       }
     </div>
