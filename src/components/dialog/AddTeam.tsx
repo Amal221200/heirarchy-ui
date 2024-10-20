@@ -24,7 +24,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
 
     const [newTeam, setNewTeam] = useState<Employee>({
         name: "",
-        id: `${headOfDepartment.department[0]}T${headOfDepartment.children?.length ?? 0}`,
+        id: `${headOfDepartment.department[0]}T${crypto.randomUUID().slice(-5)}`,
         phoneNumber: "",
         emailId: "",
         role: "Team",
@@ -39,7 +39,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
         setIsOpen(false)
         setNewTeam(() => ({
             name: "",
-            id: `${headOfDepartment.department[0]}T${headOfDepartment.children?.length?.toPrecision(2) ?? '00'}`,
+            id: `${headOfDepartment.department[0]}T${crypto.randomUUID().slice(-5)}`,
             phoneNumber: "",
             emailId: "",
             role: "Team",

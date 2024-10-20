@@ -22,7 +22,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ teamLe
   const { addTeamMember } = useCompanyStore()
   const [newEmployee, setNewEmployee] = useState<Employee>({
     name: "",
-    id: "",
+    id: `${teamLeader.department[0]}T${crypto.randomUUID().slice(-5)}`,
     phoneNumber: "",
     emailId: "",
     role: "Team Member",
@@ -35,7 +35,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ teamLe
     setIsOpen(false)
     setNewEmployee({
       name: "",
-      id: "",
+      id: `${teamLeader.department[0]}T${crypto.randomUUID().slice(-5)}`,
       phoneNumber: "",
       emailId: "",
       role: "Team Member",
