@@ -1,3 +1,4 @@
+import { companyData } from "./data";
 import { Employee } from "./types";
 
 export function searchEmployee(employees: Employee, search: string): Employee[] {
@@ -14,4 +15,35 @@ export function searchEmployee(employees: Employee, search: string): Employee[] 
     }
 
     return [];
+}
+export const getTeams = (employees: Employee, department: string): Array<Employee> => {
+    if (employees.role === 'Team' && employees.department === department) {
+        const team = {
+            name: employees.name,
+            id: employees.id,
+            department: employees.department,
+            role: employees.role,
+            emailId: employees.emailId,
+            phoneNumber: employees.phoneNumber,
+        }
+        return [team]
+    }
+
+    if (employees.children) {
+        return employees.children.flatMap(child => getTeams(child, department))
+    }
+
+    return []
+}
+
+
+
+export const getCompanyData = () => {
+    const data = localStorage.getItem('companyData');
+    if (data) {
+        return JSON.parse(data)
+    } else {
+        localStorage.setItem('companyData', JSON.stringify(companyData))
+        return companyData
+    }
 }

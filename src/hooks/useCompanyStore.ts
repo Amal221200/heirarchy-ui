@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Employee } from '@/types'
-import { getCompanyData } from '@/data'
+import { getCompanyData } from '@/functions'
 
 interface CompanyStore {
   companyStructure: Employee

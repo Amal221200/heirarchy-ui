@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
-import { getTeams } from "@/data"
+import { getTeams } from "@/functions"
 import { Edit } from "lucide-react"
 
 interface EditEmployeeDialogProps {
