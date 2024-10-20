@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
-import AddButton from "../buttons/AddButton"
+import { Plus } from "lucide-react"
 
 interface AddTeamMemberDialogProps {
   teamLeader: Employee
@@ -19,7 +19,7 @@ interface AddTeamMemberDialogProps {
 
 export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ teamLeader }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const {addTeamMember} = useCompanyStore()
+  const { addTeamMember } = useCompanyStore()
   const [newEmployee, setNewEmployee] = useState<Employee>({
     name: "",
     id: "",
@@ -42,12 +42,15 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ teamLe
       department: teamLeader.department,
       teamId: teamLeader.teamId,
     })
-  }  
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <AddButton screanReaderText="Add Team Member" />
+        <Button variant="outline" size="icon" className={'border-yellow-600 bg-yellow-100/40'}>
+          <Plus className="h-4 w-4 text-yellow-600" />
+          <span className="sr-only">Add Team Member</span>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

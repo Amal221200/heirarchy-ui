@@ -86,7 +86,7 @@ export const companyData: Employee = {
             children: [
                 {
                     name: "Engineer Team",
-                    id: "ET1",
+                    id: "ET0",
                     department: "Engineering",
                     role: "Team",
                     emailId: "frank.lee@company.com",
@@ -99,7 +99,7 @@ export const companyData: Employee = {
                             emailId: "frank.lee@company.com",
                             role: "Team Leader",
                             department: "Engineering",
-                            teamId: "ET1",
+                            teamId: "ET0",
                         },
                         {
                             name: "Grace Kim",
@@ -108,7 +108,7 @@ export const companyData: Employee = {
                             emailId: "grace.kim@company.com",
                             role: "Team Member",
                             department: "Engineering",
-                            teamId: "ET1",
+                            teamId: "ET0",
                         },
                     ]
                 },
@@ -127,7 +127,7 @@ export const companyData: Employee = {
                 {
                     name: "Design Team",
                     department: "Design",
-                    id: "DT1",
+                    id: "DT0",
                     role: "Team",
                     emailId: "ivy.chen@company.com",
                     phoneNumber: "+1 (123) 456-7890",
@@ -155,4 +155,36 @@ export const companyData: Employee = {
             ],
         },
     ],
+}
+
+export const getTeams = (employees: Employee, department: string): Array<Employee> => {
+    if (employees.role === 'Team' && employees.department === department) {
+        const team = {
+            name: employees.name,
+            id: employees.id,
+            department: employees.department,
+            role: employees.role,
+            emailId: employees.emailId,
+            phoneNumber: employees.phoneNumber,
+        }
+        return [team]
+    }
+
+    if (employees.children) {
+        return employees.children.flatMap(child => getTeams(child, department))
+    }
+
+    return []
+}
+
+
+
+export const getCompanyData = () => {
+    const data = localStorage.getItem('companyData');
+    if (data) {
+        return JSON.parse(data)
+    } else {
+        localStorage.setItem('companyData', JSON.stringify(companyData))
+        return companyData
+    }
 }

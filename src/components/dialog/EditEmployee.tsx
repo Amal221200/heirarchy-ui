@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -9,20 +9,20 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Employee, Team } from "@/types"
+import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
-import EditButton from "../buttons/EditButton"
+import { getTeams } from "@/data"
+import { Edit } from "lucide-react"
 
 interface EditEmployeeDialogProps {
   employee: Employee
-  teams: Team[]
 }
 
-export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee, teams }) => {
+export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [editedEmployee, setEditedEmployee] = useState<Employee>(employee)
-  const { editTeamMember, updateEmployee } = useCompanyStore()
+  const { editTeamMember, updateEmployee, companyStructure } = useCompanyStore()
 
   const handleUpdate = () => {
     if (editedEmployee.teamId === employee.teamId) {
@@ -33,16 +33,19 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
     setIsOpen(false)
   }
 
-  const departmentTeams = teams.filter((team) => team.department === employee.department)
+  const departmentTeams = useMemo(() => getTeams(companyStructure, employee.department), [employee, companyStructure])
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <EditButton screanReaderText="Edit employee" />
+        <Button variant="outline" size="icon" className={'border-emerald-600 bg-emerald-100/40'}>
+          <Edit className="h-4 w-4 text-emerald-600" />
+          <span className="sr-only">Edit {employee.role === "Team" ? "Team" : "Employee"}</span>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Employee</DialogTitle>
+          <DialogTitle>Edit {employee.role === "Team" ? "Team" : "Employee"}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -92,8 +95,8 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
 
               <SelectInput value={editedEmployee.teamId ?? ''}
                 onChange={(value) => setEditedEmployee({ ...editedEmployee, teamId: value })}
-                items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))} 
-                className="col-span-3" placeholder="Select Team"/>
+                items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))}
+                className="col-span-3" placeholder="Select Team" />
             </div>
           )}
         </div>

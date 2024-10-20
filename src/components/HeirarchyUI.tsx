@@ -1,4 +1,4 @@
-import React, { useDeferredValue, useMemo, useState } from "react"
+import React, { useDeferredValue, useEffect, useMemo, useState } from "react"
 import { EmployeeNode } from "./EmployeeNode"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SearchBar from "./SearchBar"
@@ -15,6 +15,10 @@ const CompanyHierarchy: React.FC = () => {
 
     return searchEmployee(companyStructure, defferedSearch)
   }, [defferedSearch, companyStructure])
+
+  useEffect(() => {
+    localStorage.setItem('companyData', JSON.stringify(companyStructure))
+  }, [companyStructure])
 
   return (
     <div className="container mx-auto p-4">

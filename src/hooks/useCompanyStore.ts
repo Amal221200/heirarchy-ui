@@ -1,10 +1,9 @@
 import { create } from 'zustand'
-import { Employee, Team } from '@/types'
-import { companyData } from '@/data'
+import { Employee } from '@/types'
+import { getCompanyData } from '@/data'
 
 interface CompanyStore {
   companyStructure: Employee
-  teams: Team[]
   updateEmployee: (updatedEmployee: Employee) => void
   addTeamMember: (teamId: string, newEmployee: Employee) => void
   deleteEmployee: (employeeId: string) => void
@@ -13,13 +12,8 @@ interface CompanyStore {
 }
 
 export const useCompanyStore = create<CompanyStore>((set) => ({
-  companyStructure: companyData,
-  teams: [
-    { id: "T1", name: "HR Team 1", department: "HR" },
-    { id: "T2", name: "HR Team 2", department: "HR" },
-    { id: "ET1", name: "Engineering Team", department: "Engineering" },
-    { id: "DT1", name: "Design Team", department: "Design" },
-  ],
+  companyStructure: getCompanyData(),
+
   updateEmployee: (updatedEmployee) =>
     set((state) => ({
       companyStructure: updateEmployeeRecursive(state.companyStructure, updatedEmployee),

@@ -19,16 +19,16 @@ interface EmployeeNodeProps {
     level: number
 }
 
-export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) => {
-    const { deleteEmployee, teams } = useCompanyStore()
+export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level,  }) => {
+    const { deleteEmployee } = useCompanyStore()
     const [isOpen, setIsOpen] = useState(false)
 
     const handleDelete = () => {
         deleteEmployee(employee.id)
     }
 
-    const canAddMember = useMemo(()=> employee.role === "Team Leader", [employee.role])
-    const isHeadOfDepartment = useMemo(()=> employee.role.includes('Head'), [employee.role])
+    const canAddMember = useMemo(() => employee.role === "Team Leader", [employee.role])
+    const isHeadOfDepartment = useMemo(() => employee.role.includes('Head'), [employee.role])
 
     return (
         <Card className="mb-2">
@@ -46,7 +46,6 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level }) =
                                 <>
                                     <EditEmployeeDialog
                                         employee={employee}
-                                        teams={teams}
                                     />
                                     <DeleteButton onClick={handleDelete} screanReaderText="Delete employee" />
                                 </>
