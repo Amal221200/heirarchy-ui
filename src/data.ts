@@ -139,7 +139,7 @@ export const companyData: Employee = {
                             emailId: "ivy.chen@company.com",
                             role: "Team Leader",
                             department: "Design",
-                            teamId: "DT1",
+                            teamId: "DT0",
                         },
                         {
                             name: "Jack Taylor",
@@ -148,7 +148,7 @@ export const companyData: Employee = {
                             emailId: "jack.taylor@company.com",
                             role: "Team Member",
                             department: "Design",
-                            teamId: "DT1",
+                            teamId: "DT0",
                         },
                     ]
                 }

@@ -19,6 +19,7 @@ interface EditEmployeeDialogProps {
   employee: Employee
 }
 
+// It edits the information of team member as well as the team since the type is same.
 export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [editedEmployee, setEditedEmployee] = useState<Employee>(employee)
@@ -88,16 +89,21 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
             />
           </div>
           {employee.role === "Team Member" && (
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="team" className="text-right">
-                Team
-              </Label>
 
-              <SelectInput value={editedEmployee.teamId ?? ''}
-                onChange={(value) => setEditedEmployee({ ...editedEmployee, teamId: value })}
-                items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))}
-                className="col-span-3" placeholder="Select Team" />
-            </div>
+            <>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="team" className="text-right">
+                  Team
+                </Label>
+
+                <SelectInput value={editedEmployee.teamId ?? ''}
+                  onChange={(value) => setEditedEmployee({ ...editedEmployee, teamId: value })}
+                  items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))}
+                  className="col-span-3" placeholder="Select Team" />
+              </div>
+            </>
+
+
           )}
         </div>
         <Button onClick={handleUpdate}>Update</Button>

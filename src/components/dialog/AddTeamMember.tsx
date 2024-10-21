@@ -14,33 +14,33 @@ import { useCompanyStore } from "@/hooks/useCompanyStore"
 import { Plus } from "lucide-react"
 
 interface AddTeamMemberDialogProps {
-  teamLeader: Employee
+  team: Employee
 }
 
-export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ teamLeader }) => {
+export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { addTeamMember } = useCompanyStore()
   const [newEmployee, setNewEmployee] = useState<Employee>({
     name: "",
-    id: `${teamLeader.department[0]}T${crypto.randomUUID().slice(-5)}`,
+    id: `${team.department[0]}T${crypto.randomUUID().slice(-5)}`,
     phoneNumber: "",
     emailId: "",
     role: "Team Member",
-    department: teamLeader.department,
-    teamId: teamLeader.teamId,
+    department: team.department,
+    teamId: team.id,
   })
 
   const handleAdd = () => {
-    addTeamMember(teamLeader.teamId!, newEmployee)
+    addTeamMember(team.id!, newEmployee)
     setIsOpen(false)
     setNewEmployee({
       name: "",
-      id: `${teamLeader.department[0]}T${crypto.randomUUID().slice(-5)}`,
+      id: `${team.department[0]}T${crypto.randomUUID().slice(-5)}`,
       phoneNumber: "",
       emailId: "",
       role: "Team Member",
-      department: teamLeader.department,
-      teamId: teamLeader.teamId,
+      department: team.department,
+      teamId: team.id,
     })
   }
 

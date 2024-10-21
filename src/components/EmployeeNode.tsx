@@ -27,7 +27,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level,  })
         deleteEmployee(employee.id)
     }
 
-    const canAddMember = useMemo(() => employee.role === "Team Leader", [employee.role])
+    const canAddMember = useMemo(() => employee.role === "Team", [employee.role])
     const isHeadOfDepartment = useMemo(() => employee.role.includes('Head'), [employee.role])
 
     return (
@@ -47,12 +47,12 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level,  })
                                     <EditEmployeeDialog
                                         employee={employee}
                                     />
-                                    <DeleteButton onClick={handleDelete} screanReaderText="Delete employee" />
+                                    <DeleteButton onClick={handleDelete} disabled={employee.role === "Team Leader"} screanReaderText="Delete employee" />
                                 </>
                             )}
                             {canAddMember && (
                                 <AddTeamMemberDialog
-                                    teamLeader={employee}
+                                    team={employee}
                                 />
                             )}
                             {isHeadOfDepartment && (
