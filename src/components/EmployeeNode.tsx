@@ -13,6 +13,8 @@ import { EditEmployeeDialog } from "./dialog/EditEmployee"
 import { AddTeamMemberDialog } from "./dialog/AddTeamMember"
 import { AddTeamDialog } from "./dialog/AddTeam"
 import DeleteButton from "./buttons/DeleteButton"
+import { getTeam } from "@/functions"
+import { toast } from "sonner"
 
 interface EmployeeNodeProps {
     employee: Employee
@@ -20,10 +22,27 @@ interface EmployeeNodeProps {
 }
 
 export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) => {
-    const { deleteEmployee } = useCompanyStore()
+    const { deleteEmployee, companyStructure } = useCompanyStore()
     const [isOpen, setIsOpen] = useState(false)
 
+
     const handleDelete = () => {
+        const team = getTeam(companyStructure, employee.department, employee.teamId!);
+
+        if (!team) {
+            return
+        }
+        if (!team.children) {
+            return
+        }
+
+        const availableEmployees = team?.children?.length;
+        console.log(availableEmployees);
+
+        if (availableEmployees <= 2) {
+            toast.warning("The team needs minimum 2 team members");
+            return
+        }
         deleteEmployee(employee.id)
     }
 
@@ -42,6 +61,13 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) 
                             <h3 className="text-lg font-semibold">{employee.name}</h3>
                             <span className="text-sm text-gray-500">({employee.role})</span>
                             <span className="text-[12px] font-semibold text-gray-500">{employee.id}</span>
+                            {
+
+                                (employee.role === "Team" && (employee?.children?.length ?? 0) < 2) &&
+                                <span className="text-[12px] font-semibold text-yellow-500">
+                                    Add another member to create this team
+                                </span>
+                            }
                         </div>
                         <div className="flex items-center space-x-2">
                             {employee.role !== "CEO" && (

@@ -13,7 +13,7 @@ import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
 import { Plus } from "lucide-react"
-import { findAvailableEmployees } from "@/functions"
+import { getAvailableEmployees } from "@/functions"
 
 interface AddTeamDialogProps {
     headOfDepartment: Employee
@@ -50,7 +50,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
     }
 
     const employees = useMemo(() => {
-        return findAvailableEmployees(headOfDepartment)
+        return getAvailableEmployees(headOfDepartment)
     }, [headOfDepartment])
 
     return (

@@ -12,8 +12,9 @@ import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
-import { getTeams } from "@/functions"
+import { getTeam, getTeams } from "@/functions"
 import { Edit } from "lucide-react"
+import { toast } from "sonner"
 
 interface EditEmployeeDialogProps {
   employee: Employee
@@ -26,9 +27,24 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
   const { editTeamMember, updateEmployee, companyStructure } = useCompanyStore()
 
   const handleUpdate = () => {
+
     if (editedEmployee.teamId === employee.teamId) {
       updateEmployee(editedEmployee)
     } else {
+      const team = getTeam(companyStructure, employee.department, employee.teamId!);
+
+      if (!team) {
+        return
+      }
+      if (!team.children) {
+        return
+      }
+
+      const availableEmployees = team?.children?.length;
+      if (availableEmployees <= 2) {
+        toast.warning("You cannot move the employee to another team. The team needs minimum 2 team members");
+        return
+      }
       editTeamMember(editedEmployee)
     }
     setIsOpen(false)

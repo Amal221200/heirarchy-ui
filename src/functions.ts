@@ -1,17 +1,17 @@
 import { companyData } from "./data";
 import { Employee } from "./types";
 
-export function searchEmployee(employees: Employee, search: string): Employee[] {
+export function searchEmployee(companyStructure: Employee, search: string): Employee[] {
     const lowerCaseSearh = search.toLowerCase()
-    const condition = employees.name.toLowerCase().includes(lowerCaseSearh) || employees.emailId.toLowerCase().includes(lowerCaseSearh) || employees.phoneNumber.toLowerCase().includes(lowerCaseSearh);
+    const condition = companyStructure.name.toLowerCase().includes(lowerCaseSearh) || companyStructure.emailId.toLowerCase().includes(lowerCaseSearh) || companyStructure.phoneNumber.toLowerCase().includes(lowerCaseSearh);
 
     if (condition) {
-        const children = employees.children ? employees.children.flatMap(child => searchEmployee(child, search)) : []
-        return [employees, ...children];
+        const children = companyStructure.children ? companyStructure.children.flatMap(child => searchEmployee(child, search)) : []
+        return [companyStructure, ...children];
     }
 
-    if (employees.children) {
-        return employees.children.flatMap(child => searchEmployee(child, search))
+    if (companyStructure.children) {
+        return companyStructure.children.flatMap(child => searchEmployee(child, search))
     }
 
     return [];
@@ -26,6 +26,7 @@ export const getTeams = (employees: Employee, department: string): Array<Employe
             role: employees.role,
             emailId: employees.emailId,
             phoneNumber: employees.phoneNumber,
+            children: employees.children
         }
         return [team]
     }
@@ -37,7 +38,9 @@ export const getTeams = (employees: Employee, department: string): Array<Employe
     return []
 }
 
-
+export function getTeam(employees: Employee, department: string, teamId: string): Employee | undefined {
+    return getTeams(employees, department).find(team => team.id === teamId)
+}
 
 export const getCompanyData = () => {
     const data = localStorage.getItem('companyData');
@@ -79,7 +82,7 @@ export function addTeamRecursive(employee: Employee, headOfDepartmentID: string,
 }
 
 export function addTeamMemberRecursive(employee: Employee, teamId: string, newMember: Employee): Employee {
-    if (employee.id === teamId) {        
+    if (employee.id === teamId) {
         return {
             ...employee,
             children: [...(employee.children || []), newMember],
@@ -117,14 +120,26 @@ export function editTeamMemberRecursive(employee: Employee, updatedEmployee: Emp
     return newEmployee;
 }
 
-export function findAvailableEmployees(employees: Employee): Array<Employee> {
+export function getAvailableEmployees(employees: Employee): Array<Employee> {
+    if (employees.role === "Team" && (employees.children && employees?.children?.length <= 2)) {
+        return []
+    }
+
     if (employees.children) {
-        return employees.children.flatMap(findAvailableEmployees).filter((employees) => !!employees)
+        return employees.children.flatMap(getAvailableEmployees).filter((employees) => !!employees)
     }
 
     if (employees.role !== "Team Leader") {
         return [employees]
     }
-
     return []
+}
+
+export function getDepartment(companyStructure: Employee, department: string): Employee | undefined {
+    if (!companyStructure.children) return
+    if (companyStructure.department === department && companyStructure.role.includes("Head")) {
+        return companyStructure
+    }
+
+    return companyStructure.children.find(child => getDepartment(child, department));
 }
