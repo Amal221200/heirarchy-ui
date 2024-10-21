@@ -9,17 +9,19 @@ interface SelectInputProps {
     className?: string
     disabled?: boolean
     placeholder: string
+    emptyText?: string
 }
 
-const SelectInput: React.FC<SelectInputProps> = ({ items, onChange, value, className, disabled, placeholder }) => {
+const SelectInput: React.FC<SelectInputProps> = ({ items, onChange, value, className, disabled, placeholder, emptyText="No data to select" }) => {
     return (
         <Select
             value={value}
             onValueChange={onChange}
             disabled={disabled}
+
         >
             <SelectTrigger className={cn("", className)}>
-                <SelectValue placeholder={placeholder} />
+                <SelectValue placeholder={items.length ? placeholder : emptyText} />
             </SelectTrigger>
             <SelectContent>
                 {items.map((item) => (

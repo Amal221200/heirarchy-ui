@@ -19,7 +19,7 @@ interface EmployeeNodeProps {
     level: number
 }
 
-export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level,  }) => {
+export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) => {
     const { deleteEmployee } = useCompanyStore()
     const [isOpen, setIsOpen] = useState(false)
 
@@ -29,6 +29,8 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level,  })
 
     const canAddMember = useMemo(() => employee.role === "Team", [employee.role])
     const isHeadOfDepartment = useMemo(() => employee.role.includes('Head'), [employee.role])
+
+    const isDeletable = useMemo(() => employee.role === "Team Member", [employee.role])
 
     return (
         <Card className="mb-2">
@@ -43,13 +45,15 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level,  })
                         </div>
                         <div className="flex items-center space-x-2">
                             {employee.role !== "CEO" && (
-                                <>
-                                    <EditEmployeeDialog
-                                        employee={employee}
-                                    />
-                                    <DeleteButton onClick={handleDelete} disabled={employee.role === "Team Leader"} screanReaderText="Delete employee" />
-                                </>
+                                <EditEmployeeDialog
+                                    employee={employee}
+                                />
                             )}
+                            {
+                                isDeletable && (
+                                    <DeleteButton onClick={handleDelete} />
+                                )
+                            }
                             {canAddMember && (
                                 <AddTeamMemberDialog
                                     team={employee}

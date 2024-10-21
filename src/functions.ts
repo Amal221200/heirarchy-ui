@@ -116,3 +116,15 @@ export function editTeamMemberRecursive(employee: Employee, updatedEmployee: Emp
     const newEmployee = addTeamMemberRecursive(filteredEmployee, updatedEmployee.teamId!, updatedEmployee);
     return newEmployee;
 }
+
+export function findAvailableEmployees(employees: Employee): Array<Employee> {
+    if (employees.children) {
+        return employees.children.flatMap(findAvailableEmployees).filter((employees) => !!employees)
+    }
+
+    if (employees.role !== "Team Leader") {
+        return [employees]
+    }
+
+    return []
+}

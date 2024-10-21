@@ -13,6 +13,7 @@ import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
 import { Plus } from "lucide-react"
+import { findAvailableEmployees } from "@/functions"
 
 interface AddTeamDialogProps {
     headOfDepartment: Employee
@@ -49,19 +50,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
     }
 
     const employees = useMemo(() => {
-        function findEmployees(employees: Employee): Array<Employee> {
-            if (employees.children) {
-                return employees.children.flatMap(findEmployees).filter((employees) => !!employees)
-            }
-
-            if (employees.role !== "Team Leader") {
-                return [employees]
-            }
-
-            return []
-        }
-
-        return findEmployees(headOfDepartment)
+        return findAvailableEmployees(headOfDepartment)
     }, [headOfDepartment])
 
     return (
@@ -146,7 +135,8 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
                             items={employees.map(employee => ({ value: employee.id, label: employee.name }))}
                             className="col-span-3"
                             placeholder="Select Team Leader"
-                            disabled={!newTeam.id || !employees.length}
+                            disabled={!employees.length}
+                            emptyText="No employees available to select"
                         />
                     </div>
                 </div>
