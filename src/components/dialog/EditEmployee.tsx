@@ -84,6 +84,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
             </Label>
             <Input
               id="phone"
+              type="tel"
               value={editedEmployee.phoneNumber}
               onChange={(e) =>
                 setEditedEmployee({ ...editedEmployee, phoneNumber: e.target.value })
@@ -97,6 +98,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
             </Label>
             <Input
               id="email"
+              type="email"
               value={editedEmployee.emailId}
               onChange={(e) =>
                 setEditedEmployee({ ...editedEmployee, emailId: e.target.value })
@@ -105,21 +107,16 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
             />
           </div>
           {employee.role === "Team Member" && (
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="team" className="text-right">
+                Team
+              </Label>
 
-            <>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="team" className="text-right">
-                  Team
-                </Label>
-
-                <SelectInput value={editedEmployee.teamId ?? ''}
-                  onChange={(value) => setEditedEmployee({ ...editedEmployee, teamId: value })}
-                  items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))}
-                  className="col-span-3" placeholder="Select Team" />
-              </div>
-            </>
-
-
+              <SelectInput value={editedEmployee.teamId ?? ''}
+                onChange={(value) => setEditedEmployee({ ...editedEmployee, teamId: value })}
+                items={departmentTeams.map((team) => ({ value: team.id, label: team.name }))}
+                className="col-span-3" placeholder="Select Team" />
+            </div>
           )}
         </div>
         <Button onClick={handleUpdate}>Update</Button>

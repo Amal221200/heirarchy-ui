@@ -11,7 +11,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
 
     return (
         <div className="my-3 max-w-xl">
-            <Input value={value} onChange={(e) => onChange(e.target.value)} placeholder="Search Employee (name, phone number, email)" />
+            <Input value={value} type="search" onChange={(e) => onChange(e.target.value)} placeholder="Search Employee (name, phone number, email)" />
         </div>
     )
 }

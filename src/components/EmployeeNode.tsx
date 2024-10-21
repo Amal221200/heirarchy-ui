@@ -19,9 +19,10 @@ import { toast } from "sonner"
 interface EmployeeNodeProps {
     employee: Employee
     level: number
+    defaultSelected?: number
 }
 
-export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) => {
+export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, defaultSelected = -1 }) => {
     const { deleteEmployee, companyStructure } = useCompanyStore()
     const [isOpen, setIsOpen] = useState(false)
 
@@ -48,16 +49,25 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) 
 
     const canAddMember = useMemo(() => employee.role === "Team", [employee.role])
     const isHeadOfDepartment = useMemo(() => employee.role.includes('Head'), [employee.role])
+    const [selected, setselected] = useState(defaultSelected ?? -1);
+
+    const handleSelect = () => {
+        setselected(selected === level ? -1 : level);
+    };
+
+    const isSelected = useMemo(() => (selected <= level && selected !== -1), [selected, level])
 
     const isDeletable = useMemo(() => employee.role === "Team Member", [employee.role])
 
     return (
         <Card className="mb-2">
             <CardContent className="p-4">
-                <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+                <Collapsible open={isOpen || isSelected} onOpenChange={setIsOpen}>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                            <User className="h-5 w-5 text-gray-500" />
+                            <Button size="icon" onClick={handleSelect} variant={isSelected ? "secondary" : "ghost"} disabled={!employee.role.includes('Head')}>
+                                <User className="h-5 w-5 text-gray-500" />
+                            </Button>
                             <h3 className="text-lg font-semibold">{employee.name}</h3>
                             <span className="text-sm text-gray-500">({employee.role})</span>
                             <span className="text-[12px] font-semibold text-gray-500">{employee.id}</span>
@@ -92,8 +102,8 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) 
                             )}
                             {employee.children && employee.children.length > 0 && (
                                 <CollapsibleTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                        {isOpen ? (
+                                    <Button variant="ghost" size="sm" disabled={isSelected}>
+                                        {isOpen || isSelected ? (
                                             <ChevronDown className="h-4 w-4" />
                                         ) : (
                                             <ChevronRight className="h-4 w-4" />
@@ -113,6 +123,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, }) 
                                         key={child.id}
                                         employee={child}
                                         level={level + 1}
+                                        defaultSelected={selected}
                                     />
                                 ))}
                             </div>

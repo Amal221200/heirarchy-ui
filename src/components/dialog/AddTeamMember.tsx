@@ -91,6 +91,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
             <Input
               id="new-phone"
               value={newEmployee.phoneNumber}
+              type="tel"
               onChange={(e) =>
                 setNewEmployee({ ...newEmployee, phoneNumber: e.target.value })
               }
@@ -104,6 +105,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
             <Input
               id="new-email"
               value={newEmployee.emailId}
+              type="email"
               onChange={(e) =>
                 setNewEmployee({ ...newEmployee, emailId: e.target.value })
               }
