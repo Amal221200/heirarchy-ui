@@ -80,6 +80,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
               onChange={(e) =>
                 setNewEmployee({ ...newEmployee, id: e.target.value })
               }
+              readOnly
               className="col-span-3"
             />
           </div>
