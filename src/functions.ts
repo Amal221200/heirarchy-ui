@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { companyData } from "./data";
 import { Employee } from "./types";
 
@@ -144,4 +145,38 @@ export function deleteEmployeeRecursive(employee: Employee, employeeId: string):
         }
     }
     return employee
+}
+
+const isValidEmail = (email: string) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+const isValidPhoneNumber = (phoneNumber: string) => {
+    const re = new RegExp(String.raw`^[0-9]{10}$`);
+    return re.test(String(phoneNumber).toLowerCase());
+}
+
+const isValidName = (name: string) => {
+    const re = new RegExp(String.raw`^[a-zA-Z\s]+$`);
+    return re.test(String(name).toLowerCase());
+}
+
+export const validateEmployee = (employee: Employee) => {
+    if (!isValidName(employee.name)) {
+        toast.warning("Invalid name");
+        return false
+    }
+
+    if (!isValidEmail(employee.emailId)) {
+        toast.warning("Invalid email");
+        return false
+    }
+
+    if (!isValidPhoneNumber(employee.phoneNumber)) {
+        toast.warning("Invalid phone number");
+        return false
+    }
+
+    return true
 }

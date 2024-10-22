@@ -12,6 +12,8 @@ import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import AddButton from "../buttons/AddButton"
+import { toast } from "sonner"
+import { validateEmployee } from "@/functions"
 
 interface AddTeamMemberDialogProps {
   team: Employee
@@ -31,6 +33,15 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
   })
 
   const handleAdd = useCallback(() => {
+    if (!newEmployee.name || !newEmployee.emailId || !newEmployee.phoneNumber) {
+      toast.warning("All fields are required");
+      return
+    }
+
+    if (!validateEmployee(newEmployee)) {
+      return
+    }
+
     addTeamMember(team.id!, newEmployee)
     setIsOpen(false)
     setNewEmployee({
@@ -92,6 +103,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
               onChange={(e) =>
                 setNewEmployee({ ...newEmployee, phoneNumber: e.target.value })
               }
+              placeholder="XXXXXXXXXX"
               className="col-span-3"
             />
           </div>
@@ -106,6 +118,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
               onChange={(e) =>
                 setNewEmployee({ ...newEmployee, emailId: e.target.value })
               }
+              placeholder="abc@example.com"
               className="col-span-3"
             />
           </div>

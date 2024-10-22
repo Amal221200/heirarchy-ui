@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
-import { getTeam, getTeams } from "@/functions"
+import { getTeam, getTeams, validateEmployee } from "@/functions"
 import { toast } from "sonner"
 import EditButton from "../buttons/EditButton"
 
@@ -27,12 +27,19 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
   const { editTeamMember, updateEmployee, companyStructure } = useCompanyStore()
 
   const handleUpdate = useCallback(() => {
+    if (!editedEmployee.name || !editedEmployee.emailId || !editedEmployee.phoneNumber) {
+      toast.warning("All fields are required");
+      return
+    }
 
+    if (!validateEmployee(editedEmployee)) {
+      return
+    }
+   
     if (editedEmployee.teamId === employee.teamId) {
       updateEmployee(editedEmployee)
     } else {
       const team = getTeam(companyStructure, employee.department, employee.teamId!);
-
       if (!team) {
         return
       }
@@ -72,6 +79,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
               onChange={(e) =>
                 setEditedEmployee({ ...editedEmployee, name: e.target.value })
               }
+              required
               className="col-span-3"
             />
           </div>
@@ -86,6 +94,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
               onChange={(e) =>
                 setEditedEmployee({ ...editedEmployee, phoneNumber: e.target.value })
               }
+              required
               className="col-span-3"
             />
           </div>
@@ -100,6 +109,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
               onChange={(e) =>
                 setEditedEmployee({ ...editedEmployee, emailId: e.target.value })
               }
+              required
               className="col-span-3"
             />
           </div>

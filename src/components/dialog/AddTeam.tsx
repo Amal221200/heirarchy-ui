@@ -12,8 +12,9 @@ import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
-import { getAvailableEmployees } from "@/functions"
+import { getAvailableEmployees, validateEmployee } from "@/functions"
 import AddButton from "../buttons/AddButton"
+import { toast } from "sonner"
 
 interface AddTeamDialogProps {
     headOfDepartment: Employee
@@ -34,7 +35,19 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
     const [teamLeader, setTeamLeader] = useState<Employee>();
 
     const handleAdd = useCallback(() => {
-        if (!teamLeader) return
+        if (!newTeam.name || !newTeam.emailId || !newTeam.phoneNumber) {
+            toast.warning("All fields are required");
+            return
+        }
+       
+        if (!validateEmployee(newTeam)) {
+            return
+          }   
+        
+        if (!teamLeader) {
+            toast.warning("Please select a team leader");
+            return
+        }
         addTeam(headOfDepartment.id!, { ...newTeam })
         editTeamMember(teamLeader)
         setIsOpen(false)
@@ -72,6 +85,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
                                 setNewTeam({ ...newTeam, name: e.target.value })
                             }
                             className="col-span-3"
+                            required
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -85,6 +99,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
                                 setNewTeam({ ...newTeam, id: e.target.value })
                             }
                             readOnly
+                            required
                             className="col-span-3"
                         />
                     </div>
@@ -96,9 +111,11 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
                             id="new-phone"
                             value={newTeam.phoneNumber}
                             type="tel"
+                            required
                             onChange={(e) =>
                                 setNewTeam({ ...newTeam, phoneNumber: e.target.value })
                             }
+                            placeholder="XXXXXXXXXX"
                             className="col-span-3"
                         />
                     </div>
@@ -113,6 +130,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
                             onChange={(e) =>
                                 setNewTeam({ ...newTeam, emailId: e.target.value })
                             }
+                            placeholder="abc@example.com"
                             className="col-span-3"
                         />
                     </div>
@@ -133,8 +151,10 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
                             className="col-span-3"
                             placeholder="Select Team Leader"
                             disabled={!employees.length}
-                            emptyText="No employees available to select"
+
+                            emptyText="No employees available"
                         />
+                        {employees.length === 0 && <span className="col-span-4 text-center text-sm text-red-500 font-semibold">Make sure you have more than 2 members in your departments team</span>}
                     </div>
                 </div>
                 <Button onClick={handleAdd}>Add</Button>

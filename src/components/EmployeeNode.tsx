@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useId, useMemo, useState } from "react"
 import { ChevronDown, ChevronRight, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -50,19 +50,23 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
     const isHeadOfDepartment = useMemo(() => employee.role.includes('Head'), [employee.role])
     const [selected, setSelected] = useState(defaultSelected ?? -1);
 
-    const handleSelect = () => {
+    const handleSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation();
         setSelected(selected === level ? -1 : level);
     };
 
     const isSelected = useMemo(() => (selected <= level && selected !== -1), [selected, level])
 
     const isDeletable = useMemo(() => employee.role === "Team Member", [employee.role])
-
+    const id = useId()
     return (
-        <Card className="mb-2">
+        <Card className="mb-2 cursor-pointer" id={id} onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen)
+        }}>
             <CardContent className="p-4">
-                <Collapsible open={isOpen || isSelected} onOpenChange={setIsOpen}>
-                    <div className="flex items-center justify-between">
+                <Collapsible open={isOpen || isSelected} onOpenChange={setIsOpen} >
+                    <div className="flex items-center justify-between ">
                         <div className="flex items-center space-x-2">
                             <Button size="icon" onClick={handleSelect} variant={isSelected ? "secondary" : "ghost"} disabled={!employee.role.includes('Head') || isOpen}>
                                 <User className="h-5 w-5 text-gray-500" />
@@ -70,7 +74,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
                             <h3 className="text-lg font-semibold">{employee.name}</h3>
                             <span className="text-sm text-gray-500">({employee.role})</span>
                             <span className="text-[12px] font-semibold text-gray-500">{employee.id}</span>
-                            {employee.children &&<span className="text-[12px] font-semibold text-gray-500">({employee.children?.length})</span>}
+                            {employee.children && <span className="text-[12px] font-semibold text-gray-500">({employee.children?.length})</span>}
                             {
 
                                 (employee.role === "Team" && (employee?.children?.length ?? 0) < 2) &&
@@ -79,7 +83,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
                                 </span>
                             }
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                             {employee.role !== "CEO" && (
                                 <EditEmployeeDialog
                                     employee={employee}

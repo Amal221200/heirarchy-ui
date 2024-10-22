@@ -4,16 +4,16 @@ import { Employee } from "@/types";
 export const companyData: Employee = {
     name: "John Doe",
     id: "CEO001",
-    phoneNumber: "+1 (123) 456-7890",
-    emailId: "john.doe@company.com",
+    phoneNumber: "1234567890",
+    emailId: "johndoe@company.com",
     role: "CEO",
     department: "Executive",
     children: [
         {
             name: "Jane Smith",
             id: "HR001",
-            phoneNumber: "+1 (234) 567-8901",
-            emailId: "jane.smith@company.com",
+            phoneNumber: "2345678901",
+            emailId: "janesmith@company.com",
             role: "Head of Staff/HR",
             department: "HR",
             children: [
@@ -28,8 +28,8 @@ export const companyData: Employee = {
                         {
                             name: "Alice Johnson",
                             id: "T1L001",
-                            phoneNumber: "+1 (345) 678-9012",
-                            emailId: "alice.johnson@company.com",
+                            phoneNumber: "3456789012",
+                            emailId: "alicejohnson@company.com",
                             role: "Team Leader",
                             department: "HR",
                             teamId: "T1",
@@ -38,8 +38,8 @@ export const companyData: Employee = {
                         {
                             name: "Bob Williams",
                             id: "T1M001",
-                            phoneNumber: "+1 (456) 789-0123",
-                            emailId: "bob.williams@company.com",
+                            phoneNumber: "4567890123",
+                            emailId: "bobwilliams@company.com",
                             role: "Team Member",
                             department: "HR",
                             teamId: "T1",
@@ -57,8 +57,8 @@ export const companyData: Employee = {
                         {
                             name: "Charlie Brown",
                             id: "T2L001",
-                            phoneNumber: "+1 (567) 890-1234",
-                            emailId: "charlie.brown@company.com",
+                            phoneNumber: "5678901234",
+                            emailId: "charliebrown@company.com",
                             role: "Team Leader",
                             department: "HR",
                             teamId: "T2",
@@ -66,8 +66,8 @@ export const companyData: Employee = {
                         {
                             name: "David Davis",
                             id: "T2M001",
-                            phoneNumber: "+1 (678) 901-2345",
-                            emailId: "david.davis@company.com",
+                            phoneNumber: "6789012345",
+                            emailId: "daviddavis@company.com",
                             role: "Team Member",
                             department: "HR",
                             teamId: "T2",
@@ -79,8 +79,8 @@ export const companyData: Employee = {
         {
             name: "Eva Martinez",
             id: "ENG001",
-            phoneNumber: "+1 (789) 012-3456",
-            emailId: "eva.martinez@company.com",
+            phoneNumber: "7890123456",
+            emailId: "evamartinez@company.com",
             role: "Head of Engineering",
             department: "Engineering",
             children: [
@@ -89,14 +89,14 @@ export const companyData: Employee = {
                     id: "ET0",
                     department: "Engineering",
                     role: "Team",
-                    emailId: "frank.lee@company.com",
-                    phoneNumber: "+1 (890) 123-4567",
+                    emailId: "franklee@company.com",
+                    phoneNumber: "8901234567",
                     children: [
                         {
                             name: "Frank Lee",
                             id: "ET1L001",
-                            phoneNumber: "+1 (890) 123-4567",
-                            emailId: "frank.lee@company.com",
+                            phoneNumber: "8901234567",
+                            emailId: "franklee@company.com",
                             role: "Team Leader",
                             department: "Engineering",
                             teamId: "ET0",
@@ -104,8 +104,8 @@ export const companyData: Employee = {
                         {
                             name: "Grace Kim",
                             id: "ET1M001",
-                            phoneNumber: "+1 (901) 234-5678",
-                            emailId: "grace.kim@company.com",
+                            phoneNumber: "9012345678",
+                            emailId: "gracekim@company.com",
                             role: "Team Member",
                             department: "Engineering",
                             teamId: "ET0",
@@ -118,8 +118,8 @@ export const companyData: Employee = {
         {
             name: "Henry Wilson",
             id: "DES001",
-            phoneNumber: "+1 (012) 345-6789",
-            emailId: "henry.wilson@company.com",
+            phoneNumber: "0123456789",
+            emailId: "henrywilson@company.com",
             role: "Head of Design",
             department: "Design",
             children: [
@@ -129,14 +129,14 @@ export const companyData: Employee = {
                     department: "Design",
                     id: "DT0",
                     role: "Team",
-                    emailId: "ivy.chen@company.com",
-                    phoneNumber: "+1 (123) 456-7890",
+                    emailId: "ivychen@company.com",
+                    phoneNumber: "1234567890",
                     children: [
                         {
                             name: "Ivy Chen",
                             id: "DT1L001",
-                            phoneNumber: "+1 (123) 456-7890",
-                            emailId: "ivy.chen@company.com",
+                            phoneNumber: "1234567890",
+                            emailId: "ivychen@company.com",
                             role: "Team Leader",
                             department: "Design",
                             teamId: "DT0",
@@ -144,8 +144,8 @@ export const companyData: Employee = {
                         {
                             name: "Jack Taylor",
                             id: "DT1M001",
-                            phoneNumber: "+1 (234) 567-8901",
-                            emailId: "jack.taylor@company.com",
+                            phoneNumber: "2345678901",
+                            emailId: "jacktaylor@company.com",
                             role: "Team Member",
                             department: "Design",
                             teamId: "DT0",
