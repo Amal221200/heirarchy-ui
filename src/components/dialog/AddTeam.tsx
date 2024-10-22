@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -33,7 +33,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
     })
     const [teamLeader, setTeamLeader] = useState<Employee>();
 
-    const handleAdd = () => {
+    const handleAdd = useCallback(() => {
         if (!teamLeader) return
         addTeam(headOfDepartment.id!, { ...newTeam })
         editTeamMember(teamLeader)
@@ -47,11 +47,9 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
             department: headOfDepartment.department,
         }))
         setTeamLeader(undefined)
-    }
+    }, [teamLeader, newTeam, headOfDepartment, addTeam, editTeamMember])
 
-    const employees = useMemo(() => {
-        return getAvailableEmployees(headOfDepartment)
-    }, [headOfDepartment])
+    const employees = useMemo(() => getAvailableEmployees(headOfDepartment), [headOfDepartment])
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>

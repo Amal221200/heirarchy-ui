@@ -52,19 +52,32 @@ export const getCompanyData = () => {
     }
 }
 
-export function updateEmployeeRecursive(employee: Employee, updatedEmployee: Employee): Employee {
-    if (employee.id === updatedEmployee.id) {
-        return updatedEmployee
+export function getAvailableEmployees(employees: Employee): Array<Employee> {
+    if (employees.role === "Team" && (employees.children && employees?.children?.length <= 2)) {
+        return []
     }
-    if (employee.children) {
-        return {
-            ...employee,
-            children: employee.children.map((child) => updateEmployeeRecursive(child, updatedEmployee)),
-        }
+
+    if (employees.children) {
+        return employees.children.flatMap(getAvailableEmployees).filter((employees) => !!employees)
     }
-    return employee
+
+    if (employees.role !== "Team Leader") {
+        return [employees]
+    }
+    return []
 }
 
+export function getDepartment(companyStructure: Employee, department: string): Employee | undefined {
+    if (!companyStructure.children) return
+    if (companyStructure.department === department && companyStructure.role.includes("Head")) {
+        return companyStructure
+    }
+
+    return companyStructure.children.find(child => getDepartment(child, department));
+}
+
+
+// Setter functions for my company store
 export function addTeamRecursive(employee: Employee, headOfDepartmentID: string, newTeam: Employee): Employee {
     if (employee.id === headOfDepartmentID) {
         return {
@@ -97,6 +110,26 @@ export function addTeamMemberRecursive(employee: Employee, teamId: string, newMe
     return employee
 }
 
+export function updateEmployeeRecursive(employee: Employee, updatedEmployee: Employee): Employee {
+    if (employee.id === updatedEmployee.id) {
+        return updatedEmployee
+    }
+    if (employee.children) {
+        return {
+            ...employee,
+            children: employee.children.map((child) => updateEmployeeRecursive(child, updatedEmployee)),
+        }
+    }
+    return employee
+}
+
+export function editTeamMemberRecursive(employee: Employee, updatedEmployee: Employee): Employee {
+    const filteredEmployee = deleteEmployeeRecursive(employee, updatedEmployee.id) ?? employee;
+
+    const newEmployee = addTeamMemberRecursive(filteredEmployee, updatedEmployee.teamId!, updatedEmployee);
+    return newEmployee;
+}
+
 export function deleteEmployeeRecursive(employee: Employee, employeeId: string): Employee | null {
     if (employee.id === employeeId) {
         return null
@@ -111,35 +144,4 @@ export function deleteEmployeeRecursive(employee: Employee, employeeId: string):
         }
     }
     return employee
-}
-
-export function editTeamMemberRecursive(employee: Employee, updatedEmployee: Employee): Employee {
-    const filteredEmployee = deleteEmployeeRecursive(employee, updatedEmployee.id) ?? employee;
-
-    const newEmployee = addTeamMemberRecursive(filteredEmployee, updatedEmployee.teamId!, updatedEmployee);
-    return newEmployee;
-}
-
-export function getAvailableEmployees(employees: Employee): Array<Employee> {
-    if (employees.role === "Team" && (employees.children && employees?.children?.length <= 2)) {
-        return []
-    }
-
-    if (employees.children) {
-        return employees.children.flatMap(getAvailableEmployees).filter((employees) => !!employees)
-    }
-
-    if (employees.role !== "Team Leader") {
-        return [employees]
-    }
-    return []
-}
-
-export function getDepartment(companyStructure: Employee, department: string): Employee | undefined {
-    if (!companyStructure.children) return
-    if (companyStructure.department === department && companyStructure.role.includes("Head")) {
-        return companyStructure
-    }
-
-    return companyStructure.children.find(child => getDepartment(child, department));
 }

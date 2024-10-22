@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -26,7 +26,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
   const [editedEmployee, setEditedEmployee] = useState<Employee>(employee)
   const { editTeamMember, updateEmployee, companyStructure } = useCompanyStore()
 
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
 
     if (editedEmployee.teamId === employee.teamId) {
       updateEmployee(editedEmployee)
@@ -48,7 +48,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
       editTeamMember(editedEmployee)
     }
     setIsOpen(false)
-  }
+  }, [editedEmployee, employee, updateEmployee, editTeamMember, companyStructure])
 
   const departmentTeams = useMemo(() => getTeams(companyStructure, employee.department), [employee, companyStructure])
 

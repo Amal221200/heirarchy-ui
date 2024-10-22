@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { ChevronDown, ChevronRight, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -27,7 +27,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
     const [isOpen, setIsOpen] = useState(false)
 
 
-    const handleDelete = () => {
+    const handleDelete = useCallback(() => {
         const team = getTeam(companyStructure, employee.department, employee.teamId!);
 
         if (!team) {
@@ -44,14 +44,14 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
             return
         }
         deleteEmployee(employee.id)
-    }
+    }, [companyStructure, deleteEmployee, employee])
 
     const canAddMember = useMemo(() => employee.role === "Team", [employee.role])
     const isHeadOfDepartment = useMemo(() => employee.role.includes('Head'), [employee.role])
-    const [selected, setselected] = useState(defaultSelected ?? -1);
+    const [selected, setSelected] = useState(defaultSelected ?? -1);
 
     const handleSelect = () => {
-        setselected(selected === level ? -1 : level);
+        setSelected(selected === level ? -1 : level);
     };
 
     const isSelected = useMemo(() => (selected <= level && selected !== -1), [selected, level])
@@ -64,17 +64,18 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
                 <Collapsible open={isOpen || isSelected} onOpenChange={setIsOpen}>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                            <Button size="icon" onClick={handleSelect} variant={isSelected ? "secondary" : "ghost"} disabled={!employee.role.includes('Head')}>
+                            <Button size="icon" onClick={handleSelect} variant={isSelected ? "secondary" : "ghost"} disabled={!employee.role.includes('Head') || isOpen}>
                                 <User className="h-5 w-5 text-gray-500" />
                             </Button>
                             <h3 className="text-lg font-semibold">{employee.name}</h3>
                             <span className="text-sm text-gray-500">({employee.role})</span>
                             <span className="text-[12px] font-semibold text-gray-500">{employee.id}</span>
+                            {employee.children &&<span className="text-[12px] font-semibold text-gray-500">({employee.children?.length})</span>}
                             {
 
                                 (employee.role === "Team" && (employee?.children?.length ?? 0) < 2) &&
                                 <span className="text-[12px] font-semibold text-yellow-500">
-                                    Add another member to create this team
+                                    Add another member to complete this team
                                 </span>
                             }
                         </div>

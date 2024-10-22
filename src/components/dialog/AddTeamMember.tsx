@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -30,7 +30,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
     teamId: team.id,
   })
 
-  const handleAdd = () => {
+  const handleAdd = useCallback(() => {
     addTeamMember(team.id!, newEmployee)
     setIsOpen(false)
     setNewEmployee({
@@ -42,7 +42,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({ team }
       department: team.department,
       teamId: team.id,
     })
-  }
+  }, [addTeamMember, newEmployee, team])
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
