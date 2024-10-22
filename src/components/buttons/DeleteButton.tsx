@@ -7,7 +7,6 @@ interface DeleteButtonProps extends ComponentProps<'button'> {
     screanReaderText?: string
 }
 
-
 const DeleteButton: React.FC<DeleteButtonProps> = ({ screanReaderText, className, ...props }) => {
     return (
         <Button variant="outline" size="icon" className={cn('border-red-600 bg-red-100/40', className)} {...props}>

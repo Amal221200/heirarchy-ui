@@ -38,7 +38,6 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
         }
 
         const availableEmployees = team?.children?.length;
-        console.log(availableEmployees);
 
         if (availableEmployees <= 2) {
             toast.warning("The team needs minimum 2 team members");

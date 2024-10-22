@@ -12,8 +12,8 @@ import { Label } from "@/components/ui/label"
 import { Employee } from "@/types"
 import { useCompanyStore } from "@/hooks/useCompanyStore"
 import SelectInput from "../SelectInput"
-import { Plus } from "lucide-react"
 import { getAvailableEmployees } from "@/functions"
+import AddButton from "../buttons/AddButton"
 
 interface AddTeamDialogProps {
     headOfDepartment: Employee
@@ -56,10 +56,7 @@ export const AddTeamDialog: React.FC<AddTeamDialogProps> = ({ headOfDepartment }
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" size="icon" className={'border-yellow-600 bg-yellow-100/40'}>
-                    <Plus className="h-4 w-4 text-yellow-600" />
-                    <span className="sr-only">Add Team</span>
-                </Button>
+                <AddButton screanReaderText="Add Team" />
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
