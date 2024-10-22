@@ -94,6 +94,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
               onChange={(e) =>
                 setEditedEmployee({ ...editedEmployee, phoneNumber: e.target.value })
               }
+              placeholder="XXXXXXXXXX"
               required
               className="col-span-3"
             />
@@ -110,6 +111,7 @@ export const EditEmployeeDialog: React.FC<EditEmployeeDialogProps> = ({ employee
                 setEditedEmployee({ ...editedEmployee, emailId: e.target.value })
               }
               required
+              placeholder="abc@example.com"
               className="col-span-3"
             />
           </div>

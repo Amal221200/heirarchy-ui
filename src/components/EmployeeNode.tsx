@@ -62,6 +62,7 @@ export const EmployeeNode: React.FC<EmployeeNodeProps> = ({ employee, level, def
     return (
         <Card className="mb-2 cursor-pointer" id={id} onClick={(e) => {
             e.stopPropagation();
+            if(isSelected) return
             setIsOpen(!isOpen)
         }}>
             <CardContent className="p-4">

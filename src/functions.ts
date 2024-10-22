@@ -158,13 +158,13 @@ const isValidPhoneNumber = (phoneNumber: string) => {
 }
 
 const isValidName = (name: string) => {
-    const re = new RegExp(String.raw`^[a-zA-Z\s]+$`);
-    return re.test(String(name).toLowerCase());
+    ;
+    return name.length >= 3;
 }
 
 export const validateEmployee = (employee: Employee) => {
     if (!isValidName(employee.name)) {
-        toast.warning("Invalid name");
+        toast.warning("Invalid name, must be at least 3 characters long");
         return false
     }
 
@@ -174,7 +174,7 @@ export const validateEmployee = (employee: Employee) => {
     }
 
     if (!isValidPhoneNumber(employee.phoneNumber)) {
-        toast.warning("Invalid phone number");
+        toast.warning("Invalid phone number, must be 10 digits");
         return false
     }
 
