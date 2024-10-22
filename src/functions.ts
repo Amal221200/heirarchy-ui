@@ -158,7 +158,6 @@ const isValidPhoneNumber = (phoneNumber: string) => {
 }
 
 const isValidName = (name: string) => {
-    ;
     return name.length >= 3;
 }
 
